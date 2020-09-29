@@ -15,6 +15,9 @@ def mask_image():
 	ap = argparse.ArgumentParser()
 	ap.add_argument("-i", "--image", required=True,
 		help="path to input image")
+	ap.add_argument("-o", "--output",type=str,
+		default=None,
+		help="path to save the output image")
 	ap.add_argument("-f", "--face", type=str,
 		default="face_detector",
 		help="path to face detector model directory")
@@ -96,10 +99,12 @@ def mask_image():
 			cv2.putText(image, label, (startX, startY - 10),
 				cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
 			cv2.rectangle(image, (startX, startY), (endX, endY), color, 2)
-
-	# show the output image
-	cv2.imshow("Output", image)
-	cv2.waitKey(0)
+	# save or show the output image
+	if args["output"]:
+		cv2.imwrite(args["output"], image)
+	else:
+		cv2.imshow("Output", image)
+		cv2.waitKey(0)
 	
 if __name__ == "__main__":
 	mask_image()
